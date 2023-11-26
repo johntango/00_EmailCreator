@@ -38,7 +38,7 @@ app.post('/test-prompt', async(req, res) => {
       prompt: prompt
       }
     )
-    res.send(completion.choices[0])
+    res.send(completion.choices[0].text)
     console.log("chatResponse: " + completion.choices[0].text); 
 } catch (error) {
       console.error('Error:', error);
