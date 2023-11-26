@@ -8,20 +8,6 @@ import bodyParser from 'body-parser'   // really important otherwise the body of
 app.use(bodyParser.urlencoded({ extended: false }));
 // get OPENAI API key from GitHub secrets
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-
-// use below if runnning locally and not using GitHub secrets
-async function getKey(){
-
-  fs.readFile('openai_key.json', (err, data) => {
-    // change the data to a json object and assign it to the openai variable
-    data = JSON.parse(data);
-    // get the api key from the json object
-    let key = data.apiKey;
-    console.log(key)
-    let client = new OpenAI({apiKey: key});
-    return client;
-  });
-}
 const client = new OpenAI({apiKey: OPENAI_API_KEY});
 // Middleware to parse JSON payloads in POST requests
 app.use(express.json());
@@ -45,7 +31,7 @@ app.post('/test-prompt', async(req, res) => {
   let topic = req.body.prompt;
   let sentiment = req.body.sentiment;
   try {
-    let prompt = "Write aproximately 100 word article on this topic: " + topic + " using this sentiment: " + sentiment;
+    let prompt = "Write aproximately two paragraph article on this topic: " + topic + " using this sentiment: " + sentiment;
 
     let completion = await client.completions.create({
       model: 'gpt-3.5-turbo-instruct',
